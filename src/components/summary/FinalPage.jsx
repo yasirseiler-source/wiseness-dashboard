@@ -3,10 +3,10 @@ import Icon from '../ui/Icon'
 import styles from './FinalPage.module.css'
 
 const sizeMap = {
-  S:  { label: 'Klein',      desc: 'Bis 10 Räume, bis 20 Mitarbeiter',      color: 'var(--status-green)',  bg: 'var(--status-green-bg)',  pct: 25 },
-  M:  { label: 'Mittel',     desc: '10–30 Räume, 20–50 Mitarbeiter',         color: 'var(--primary)',        bg: 'var(--primary-lighter)',  pct: 50 },
-  L:  { label: 'Groß',       desc: '30–60 Räume, 50–100 Mitarbeiter',        color: 'var(--status-yellow)', bg: 'var(--status-yellow-bg)', pct: 75 },
-  XL: { label: 'Enterprise', desc: 'Über 60 Räume, über 100 Mitarbeiter',    color: 'var(--status-red)',    bg: 'var(--status-red-bg)',    pct: 100 },
+  S:  { label: 'Küçük',      desc: '10 odaya kadar, 20 çalışana kadar',      color: 'var(--status-green)',  bg: 'var(--status-green-bg)',  pct: 25 },
+  M:  { label: 'Orta',       desc: '10–30 oda, 20–50 çalışan',               color: 'var(--primary)',        bg: 'var(--primary-lighter)',  pct: 50 },
+  L:  { label: 'Büyük',      desc: '30–60 oda, 50–100 çalışan',              color: 'var(--status-yellow)', bg: 'var(--status-yellow-bg)', pct: 75 },
+  XL: { label: 'Kurumsal',   desc: '60 odadan fazla, 100 çalışandan fazla',  color: 'var(--status-red)',    bg: 'var(--status-red-bg)',    pct: 100 },
 }
 
 /* Donut SVG */
@@ -21,9 +21,9 @@ function DonutChart({ active, total }) {
           strokeDasharray={`${pct * circ} ${circ}`} strokeLinecap="butt"
           transform="rotate(-90 52 52)" style={{ transition: 'stroke-dasharray 0.6s ease' }} />
         <text x="52" y="48" textAnchor="middle" fontSize="15" fontWeight="800" fill="var(--primary)" fontFamily="Montserrat,sans-serif">{active}</text>
-        <text x="52" y="63" textAnchor="middle" fontSize="9" fill="var(--text-muted)" fontFamily="Montserrat,sans-serif">von {total}</text>
+        <text x="52" y="63" textAnchor="middle" fontSize="9" fill="var(--text-muted)" fontFamily="Montserrat,sans-serif">{total} üzerinden</text>
       </svg>
-      <span className={styles.donutLabel}>Module aktiv</span>
+      <span className={styles.donutLabel}>Aktif modüller</span>
     </div>
   )
 }
@@ -51,13 +51,14 @@ function SizeBar({ systemSize }) {
 
 /* Needs bar chart */
 const needsKeys = [
-  { key: 'sicherheitsbedarf',    label: 'Sicherheit' },
-  { key: 'automatisierungsbedarf', label: 'Automation' },
-  { key: 'wartungsbedarf',       label: 'Wartung' },
-  { key: 'kommunikationsbedarf', label: 'Kommunikation' },
-  { key: 'notfallmanagement',    label: 'Notfall' },
+  { key: 'sicherheitsbedarf',    label: 'Güvenlik' },
+  { key: 'automatisierungsbedarf', label: 'Otomasyon' },
+  { key: 'wartungsbedarf',       label: 'Bakım' },
+  { key: 'kommunikationsbedarf', label: 'İletişim' },
+  { key: 'notfallmanagement',    label: 'Acil durum' },
 ]
-const lvls = ['Kein Bedarf', 'Niedrig', 'Mittel', 'Hoch', 'Sehr hoch']
+
+const lvls = ['İhtiyaç yok', 'Düşük', 'Orta', 'Yüksek', 'Çok yüksek']
 const bClrs = ['var(--border)', 'var(--status-green)', '#E8A020', '#D4640A', 'var(--status-red)']
 
 function NeedsChart({ formData }) {
@@ -66,7 +67,8 @@ function NeedsChart({ formData }) {
     return { label, pct: idx <= 0 ? 0 : (idx / (lvls.length - 1)) * 100, color: bClrs[Math.max(idx, 0)], val: formData[key] || '' }
   }).filter(b => b.pct > 0)
 
-  if (!bars.length) return <p className={styles.noData}>Keine Bedarfsangaben erfasst.</p>
+  if (!bars.length) return <p className={styles.noData}>Herhangi bir ihtiyaç bilgisi girilmedi.</p>
+
   return (
     <div className={styles.needsChart}>
       {bars.map(b => (
@@ -80,7 +82,6 @@ function NeedsChart({ formData }) {
   )
 }
 
-/* ── Main ── */
 export default function FinalPage({ state, vertical, onBack }) {
   const { selectedModules, selectedSensors, systemSize, cameraCount, technicalHints, formData, effectiveSensorQty, totalModules } = state
   const size = sizeMap[systemSize] || sizeMap.S
@@ -104,10 +105,10 @@ export default function FinalPage({ state, vertical, onBack }) {
       <div className={styles.successPage}>
         <div className={styles.successCard}>
           <div className={styles.successIconWrap}><Icon name="check" size={28} color="var(--status-green)" /></div>
-          <h1 className={styles.successTitle}>Anfrage übermittelt</h1>
-          <p className={styles.successText}>Ihre Systemkonfiguration wurde erfolgreich gesendet. Das Wiseness-Team meldet sich in Kürze bei Ihnen.</p>
+          <h1 className={styles.successTitle}>Talep gönderildi</h1>
+          <p className={styles.successText}>Sistem yapılandırmanız başarıyla gönderildi. Wiseness ekibi kısa süre içinde sizinle iletişime geçecektir.</p>
           {formData.firmenname && <div className={styles.successMeta}>{formData.firmenname}{formData.email && ` · ${formData.email}`}</div>}
-          <button className={styles.backBtn} onClick={onBack}>Zur Startseite</button>
+          <button className={styles.backBtn} onClick={onBack}>Ana sayfaya dön</button>
         </div>
       </div>
     )
@@ -118,56 +119,15 @@ export default function FinalPage({ state, vertical, onBack }) {
       <div className={styles.pageHeader}>
         <button className={styles.backLink} onClick={onBack}>
           <Icon name="chevronRight" size={14} color="var(--primary)" style={{ transform: 'rotate(180deg)' }} />
-          Zurück
+          Geri
         </button>
         <div>
-          <h1 className={styles.pageTitle}>Systemempfehlung & Projektzusammenfassung</h1>
-          <p className={styles.pageSubtitle}>Automatisch generiert auf Basis Ihrer Eingaben</p>
+          <h1 className={styles.pageTitle}>Sistem önerisi ve proje özeti</h1>
+          <p className={styles.pageSubtitle}>Girdiğiniz bilgilere göre otomatik oluşturuldu</p>
         </div>
       </div>
 
       <div className={styles.grid}>
-        {/* LEFT */}
         <div className={styles.left}>
           <div className={styles.card}>
-            <div className={styles.cardHead}><Icon name="chart" size={14} color="var(--text-muted)" /><span>Systemanalyse</span></div>
-            <div className={styles.analysisRow}>
-              <DonutChart active={modules.length} total={totalModules || 10} />
-              <div className={styles.analysisMid}>
-                <div className={styles.analysisSub}>Systemgröße</div>
-                <SizeBar systemSize={systemSize} />
-                <div className={styles.sizeReadout}>
-                  <span className={styles.sizeCode} style={{ color: size.color }}>{systemSize}</span>
-                  <span className={styles.sizeName}>{size.label}</span>
-                </div>
-                <div className={styles.sizeDesc}>{size.desc}</div>
-              </div>
-              <div className={styles.cameraBlock}>
-                <Icon name="camera" size={18} color="var(--primary)" />
-                <div className={styles.cameraNum}>{cameraCount}</div>
-                <div className={styles.cameraLabel}>Kameras<br/>empfohlen</div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* RIGHT */}
-        <div className={styles.right}>
-          <div className={styles.card}>
-            <div className={styles.cardHead}>
-              <Icon name="send" size={14} color="var(--text-muted)" />
-              <span>Talep gönder</span>
-            </div>
-            <p className={styles.sendText}>
-              Tüm yapılandırma, Wiseness ekibine yapılandırılmış veri olarak gönderilecektir.
-            </p>
-            <button className={styles.sendBtn} onClick={handleSend} disabled={sending}>
-              {sending ? 'Gönderiliyor…' : 'Sistemi hesapla ve talep gönder'}
-              {!sending && <Icon name="arrowRight" size={14} color="#fff" />}
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-  )
-}
+            <div className={styles.cardHead}><Icon name="chart" size={14} color="var(--text-muted)" /><span>Sistem analizi</span></div>
