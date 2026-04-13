@@ -10,17 +10,17 @@ export default function CompanySection({ formData, onUpdate }) {
         <label className="form-label">Firma Adı *</label>
         <input
           className="form-input"
-          placeholder="örn. ABC Teknoloji A.Ş."
+          placeholder="örn. Örnek A.Ş."
           required
           {...f('firmenname')}
         />
       </div>
 
       <div className="form-group">
-        <label className="form-label">Yetkili Kişi *</label>
+        <label className="form-label">İlgili Kişi *</label>
         <input
           className="form-input"
-          placeholder="Ad Soyad"
+          placeholder="Ad ve soyad"
           required
           {...f('ansprechpartner')}
         />
@@ -31,7 +31,7 @@ export default function CompanySection({ formData, onUpdate }) {
         <input
           className="form-input"
           type="tel"
-          placeholder="+90 5xx xxx xx xx"
+          placeholder="+90 ..."
           {...f('telefon')}
         />
       </div>
@@ -41,7 +41,7 @@ export default function CompanySection({ formData, onUpdate }) {
         <input
           className="form-input"
           type="email"
-          placeholder="info@firma.com"
+          placeholder="info@sirket.com"
           required
           {...f('email')}
         />
@@ -59,8 +59,8 @@ export default function CompanySection({ formData, onUpdate }) {
       <div className="form-group">
         <label className="form-label">Sektör</label>
         <select className="form-select" {...f('branche')}>
-          <option value="">Lütfen seçiniz</option>
-          <option>Bakım / Sağlık</option>
+          <option value="">Lütfen seçin</option>
+          <option>Bakım / Tıp</option>
           <option>Üretim / İmalat</option>
           <option>Lojistik / Depo</option>
           <option>Ofis / Yönetim</option>
@@ -72,7 +72,7 @@ export default function CompanySection({ formData, onUpdate }) {
       <div className="form-group" style={{ gridColumn: '1 / -1' }}>
         <label className="form-label">Yapı Türü</label>
         <select className="form-select" {...f('objekttyp')}>
-          <option value="">Lütfen seçiniz</option>
+          <option value="">Lütfen seçin</option>
           <option>Bakım Evi / Huzurevi</option>
           <option>Klinik / Hastane</option>
           <option>Fabrika / Tesis</option>
