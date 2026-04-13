@@ -5,31 +5,31 @@ const cards = [
   {
     id: 'pflege',
     icon: 'activity',
-    label: 'SEKTOR 01',
-    title: 'Pflege / Klinik / Huzurevi',
-    subtitle: 'Pflegeheime, Kliniken & betreute Einrichtungen',
-    description: 'Intelligente Pflege- und Sicherheitsstruktur. Bewohnerverwaltung, Notfalllogik, Pflegeprozesse und Personalsteuerung.',
-    tags: ['Bewohnerverwaltung', 'Notrufsystem', 'Sturzrisiko', 'Medikamentenlogik'],
+    label: 'SEKTÖR 01',
+    title: 'Bakım / Klinik / Huzurevi',
+    subtitle: 'Bakım evleri, klinikler ve destekli yaşam alanları',
+    description: 'Akıllı bakım ve güvenlik yapısı. Sakin yönetimi, acil durum mantığı, bakım süreçleri ve personel yönetimi.',
+    tags: ['Sakin yönetimi', 'Acil çağrı sistemi', 'Düşme riski', 'İlaç yönetimi'],
     accentColor: '#1B5FA6',
   },
   {
     id: 'fabrik',
     icon: 'cpu',
-    label: 'SEKTOR 02',
-    title: 'Fabrik / Produktion / Lager',
-    subtitle: 'Fabriken, Produktionen & technische Betriebe',
-    description: 'Transparenz für Maschinen, Prozesse und Materialfluss. Wartungsmanagement, Störungslogik und Schichtplanung.',
-    tags: ['Maschinenübersicht', 'Wartungsmanagement', 'Störungslogik', 'Lagerstruktur'],
+    label: 'SEKTÖR 02',
+    title: 'Fabrika / Üretim / Depo',
+    subtitle: 'Fabrikalar, üretim tesisleri ve teknik işletmeler',
+    description: 'Makine, süreç ve malzeme akışı için şeffaflık. Bakım yönetimi, arıza mantığı ve vardiya planlaması.',
+    tags: ['Makine görünümü', 'Bakım yönetimi', 'Arıza mantığı', 'Depo yapısı'],
     accentColor: '#1B5FA6',
   },
   {
     id: 'unternehmen',
     icon: 'briefcase',
-    label: 'SEKTOR 03',
-    title: 'Unternehmen / Büro / Service',
-    subtitle: 'Büros, Dienstleister & Verwaltungen',
-    description: 'Struktur, Kommunikation und Aufgaben in einem System. Rollen, Prozesse und operative Klarheit.',
-    tags: ['Aufgabenmanagement', 'Abteilungsstruktur', 'Raumbelegung', 'Management-Dashboard'],
+    label: 'SEKTÖR 03',
+    title: 'İşletme / Ofis / Hizmet',
+    subtitle: 'Ofisler, hizmet firmaları ve yönetim birimleri',
+    description: 'Yapı, iletişim ve görevler tek bir sistemde. Roller, süreçler ve operasyonel netlik.',
+    tags: ['Görev yönetimi', 'Departman yapısı', 'Alan kullanımı', 'Yönetim paneli'],
     accentColor: '#1B5FA6',
   },
 ]
@@ -40,18 +40,29 @@ export default function LandingPage({ onNavigate }) {
       {/* Hero */}
       <div className={styles.hero}>
         <div className={styles.heroContent}>
-          <div className={styles.heroLabel}>WISENESS SYSTEM — INTAKE DASHBOARD</div>
-          <h1 className={styles.heroTitle}>Professional System<br />Intake & Configuration</h1>
+          <div className={styles.heroLabel}>WISENESS SYSTEM — BAŞVURU PANELİ</div>
+          <h1 className={styles.heroTitle}>
+            Profesyonel Sistem<br />Başvuru ve Yapılandırma
+          </h1>
           <p className={styles.heroText}>
-            Strukturierte Bedarfserfassung, automatische Systemempfehlung und
-            individuelle Angebotsplanung für Enterprise-Kunden.
+            Yapılandırılmış ihtiyaç analizi, otomatik sistem önerisi ve
+            kurumsal müşteriler için özel teklif planlaması.
           </p>
           <div className={styles.heroStats}>
-            <div className={styles.stat}><span className={styles.statNum}>3</span><span className={styles.statLabel}>Branchen</span></div>
+            <div className={styles.stat}>
+              <span className={styles.statNum}>3</span>
+              <span className={styles.statLabel}>Sektör</span>
+            </div>
             <div className={styles.statDiv} />
-            <div className={styles.stat}><span className={styles.statNum}>30+</span><span className={styles.statLabel}>Module</span></div>
+            <div className={styles.stat}>
+              <span className={styles.statNum}>30+</span>
+              <span className={styles.statLabel}>Modül</span>
+            </div>
             <div className={styles.statDiv} />
-            <div className={styles.stat}><span className={styles.statNum}>S–XL</span><span className={styles.statLabel}>Systemgrößen</span></div>
+            <div className={styles.stat}>
+              <span className={styles.statNum}>S–XL</span>
+              <span className={styles.statLabel}>Sistem boyutları</span>
+            </div>
           </div>
         </div>
         <div className={styles.heroGrid} />
@@ -59,7 +70,7 @@ export default function LandingPage({ onNavigate }) {
 
       {/* Divider */}
       <div className={styles.divider}>
-        <span>Branche auswählen</span>
+        <span>Sektör seçin</span>
       </div>
 
       {/* Cards */}
@@ -89,7 +100,7 @@ export default function LandingPage({ onNavigate }) {
             </div>
 
             <div className={styles.cardFooter}>
-              <span className={styles.cardCta}>Intake starten</span>
+              <span className={styles.cardCta}>Başvuruyu başlat</span>
               <Icon name="arrowRight" size={14} color="var(--primary)" />
             </div>
           </button>
@@ -99,9 +110,9 @@ export default function LandingPage({ onNavigate }) {
       {/* Feature bar */}
       <div className={styles.featureBar}>
         {[
-          { icon: 'list', text: 'Strukturierte Bedarfserfassung' },
-          { icon: 'settings', text: 'Automatische Systemempfehlung' },
-          { icon: 'send', text: 'Direkte Angebotsanfrage' },
+          { icon: 'list', text: 'Yapılandırılmış ihtiyaç analizi' },
+          { icon: 'settings', text: 'Otomatik sistem önerisi' },
+          { icon: 'send', text: 'Doğrudan teklif talebi' },
         ].map(({ icon, text }) => (
           <div key={text} className={styles.feature}>
             <Icon name={icon} size={14} color="var(--text-muted)" />
