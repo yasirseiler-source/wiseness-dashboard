@@ -57,7 +57,6 @@ const needsKeys = [
   { key: 'kommunikationsbedarf', label: 'İletişim' },
   { key: 'notfallmanagement',    label: 'Acil durum' },
 ]
-
 const lvls = ['İhtiyaç yok', 'Düşük', 'Orta', 'Yüksek', 'Çok yüksek']
 const bClrs = ['var(--border)', 'var(--status-green)', '#E8A020', '#D4640A', 'var(--status-red)']
 
@@ -68,7 +67,6 @@ function NeedsChart({ formData }) {
   }).filter(b => b.pct > 0)
 
   if (!bars.length) return <p className={styles.noData}>Herhangi bir ihtiyaç bilgisi girilmedi.</p>
-
   return (
     <div className={styles.needsChart}>
       {bars.map(b => (
@@ -82,6 +80,7 @@ function NeedsChart({ formData }) {
   )
 }
 
+/* ── Main ── */
 export default function FinalPage({ state, vertical, onBack }) {
   const { selectedModules, selectedSensors, systemSize, cameraCount, technicalHints, formData, effectiveSensorQty, totalModules } = state
   const size = sizeMap[systemSize] || sizeMap.S
@@ -128,6 +127,120 @@ export default function FinalPage({ state, vertical, onBack }) {
       </div>
 
       <div className={styles.grid}>
+        {/* LEFT */}
         <div className={styles.left}>
+          {/* Analysis header */}
           <div className={styles.card}>
             <div className={styles.cardHead}><Icon name="chart" size={14} color="var(--text-muted)" /><span>Sistem analizi</span></div>
+            <div className={styles.analysisRow}>
+              <DonutChart active={modules.length} total={totalModules || 10} />
+              <div className={styles.analysisMid}>
+                <div className={styles.analysisSub}>Sistem boyutu</div>
+                <SizeBar systemSize={systemSize} />
+                <div className={styles.sizeReadout}>
+                  <span className={styles.sizeCode} style={{ color: size.color }}>{systemSize}</span>
+                  <span className={styles.sizeName}>{size.label}</span>
+                </div>
+                <div className={styles.sizeDesc}>{size.desc}</div>
+              </div>
+              <div className={styles.cameraBlock}>
+                <Icon name="camera" size={18} color="var(--primary)" />
+                <div className={styles.cameraNum}>{cameraCount}</div>
+                <div className={styles.cameraLabel}>Önerilen<br/>kamera</div>
+              </div>
+            </div>
+          </div>
+
+          {/* Modules */}
+          <div className={styles.card}>
+            <div className={styles.cardHead}><Icon name="layers" size={14} color="var(--text-muted)" /><span>Önerilen modüller</span><span className={styles.countTag}>{modules.length}</span></div>
+            <div className={styles.tagList}>
+              {modules.map(m => <span key={m} className={styles.tag}>{m}</span>)}
+            </div>
+          </div>
+
+          {/* Sensors */}
+          <div className={styles.card}>
+            <div className={styles.cardHead}><Icon name="radio" size={14} color="var(--text-muted)" /><span>Önerilen sensörler</span><span className={styles.countTag}>{sensors.length}</span></div>
+            <div className={styles.sensorTable}>
+              <div className={styles.sensorTableHead}><span>Tür</span><span>Miktar</span></div>
+              {sensors.map(s => (
+                <div key={s} className={styles.sensorRow}>
+                  <span className={styles.sensorDot} /><span className={styles.sensorName}>{s}</span>
+                  {effectiveSensorQty?.[s] !== undefined && <span className={styles.sensorQty}>{effectiveSensorQty[s]}×</span>}
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Needs chart */}
+          <div className={styles.card}>
+            <div className={styles.cardHead}><Icon name="target" size={14} color="var(--text-muted)" /><span>İhtiyaç analizi</span></div>
+            <NeedsChart formData={formData} />
+          </div>
+
+          {/* Technical hints */}
+          <div className={styles.card}>
+            <div className={styles.cardHead}><Icon name="tool" size={14} color="var(--text-muted)" /><span>Teknik bilgiler</span></div>
+            <ul className={styles.hintList}>
+              {technicalHints.map((h, i) => (
+                <li key={i} className={styles.hintItem}><div className={styles.hintNum}>{i + 1}</div>{h}</li>
+              ))}
+            </ul>
+          </div>
+        </div>
+
+        {/* RIGHT */}
+        <div className={styles.right}>
+          <div className={styles.card}>
+            <div className={styles.cardHead}><Icon name="file" size={14} color="var(--text-muted)" /><span>Proje özeti</span></div>
+            <table className={styles.sumTable}>
+              <tbody>
+                {[
+                  ['Firma', formData.firmenname],
+                  ['İlgili kişi', formData.ansprechpartner],
+                  ['Konum', formData.standort],
+                  ['Sektör', formData.branche],
+                  ['Yapı türü', formData.objekttyp],
+                  ['Alan', formData.gesamtflaeche && `${formData.gesamtflaeche} m²`],
+                  ['Odalar', formData.anzahlRaeume],
+                  ['Katlar', formData.anzahlEtagen],
+                  ['Çalışan', formData.anzahlMitarbeiter],
+                  ['Kullanıcı', formData.anzahlBewohner],
+                  ['Bütçe', formData.budgetrahmen],
+                  ['Öncelik', formData.prioritaet],
+                  ['Zaman', formData.umsetzungszeitraum],
+                  ['Sektör tipi', vertical?.title],
+                  ['Sistem boyutu', `${systemSize} – ${size.label}`, true],
+                  ['Önerilen kamera', `${cameraCount} adet`, true],
+                  ['Aktif modüller', `${modules.length} / ${totalModules || 10}`, true],
+                ].filter(([, v]) => !!v).map(([label, value, hl]) => (
+                  <tr key={label} className={hl ? styles.sumRowHl : styles.sumRow}>
+                    <td className={styles.sumLabel}>{label}</td>
+                    <td className={styles.sumValue}>{value}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          {formData.freitextWuensche && (
+            <div className={styles.card}>
+              <div className={styles.cardHead}><Icon name="messageSquare" size={14} color="var(--text-muted)" /><span>Özel istekler</span></div>
+              <p className={styles.freitext}>{formData.freitextWuensche}</p>
+            </div>
+          )}
+
+          <div className={styles.card}>
+            <div className={styles.cardHead}><Icon name="send" size={14} color="var(--text-muted)" /><span>Talep gönder</span></div>
+            <p className={styles.sendText}>Tüm yapılandırma, Wiseness ekibine yapılandırılmış veri olarak gönderilecektir.</p>
+            <button className={styles.sendBtn} onClick={handleSend} disabled={sending}>
+              {sending ? 'Gönderiliyor…' : 'Sistemi hesapla ve talep gönder'}
+              {!sending && <Icon name="arrowRight" size={14} color="#fff" />}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
